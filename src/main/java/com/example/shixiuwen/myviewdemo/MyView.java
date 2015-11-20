@@ -68,14 +68,13 @@ public class MyView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-
+        //将最终效果图绘制到画布，先绘制光盘，再绘制反光效果
         canvas.drawBitmap(backBitmap, 0, 0, null);
         canvas.drawCircle(backBitmap.getHeight() / 2, backBitmap.getHeight() / 2, backBitmap.getHeight() / 2, paint);
     }
 
     public MyView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
     }
 
     /**
@@ -172,17 +171,18 @@ public class MyView extends View {
     }
 
     /**
-     * 转动动画
+     * 转动动画的实现方法
      *
-     * @param isPlay
-     * @param view
-     * @param during
+     * @param isPlay 当前音乐是否播放
+     * @param view 绑定的视图
+     * @param during 持续时间 单位：毫秒
      */
     public void rotate(boolean isPlay, View view, int during) {
         if (isPlay) {
             RotateAnimation ra = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f,
                     Animation.RELATIVE_TO_SELF, 0.5f);
             ra.setDuration(during);
+            //不停转动
             ra.setRepeatCount(-1);
             //设置不停旋转的样式（匀速），默认为开始和结束的时候减速
             ra.setInterpolator(new LinearInterpolator());
@@ -201,12 +201,18 @@ public class MyView extends View {
 
     /**
      * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     * 未用到此方法（可删除）
      */
     public int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
+    /**
+     * bitmap转drawable减少内存占用
+     * @param bitmap
+     * @return
+     */
     public Drawable bitToDraw(Bitmap bitmap) {
         BitmapDrawable bd = new BitmapDrawable(getResources(), bitmap);
         return bd;
